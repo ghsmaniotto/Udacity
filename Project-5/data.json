@@ -1,0 +1,11 @@
+{
+    "google": {
+        "maps": {
+            "api": {
+                "token": "AIzaSyDyDB6EP2IkH1qW9xxuCPoIzEkFbJAvUbk",
+                "name": "UdacityAPI_Smaniotto"
+            }
+        }
+    }
+
+}
