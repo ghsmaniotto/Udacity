@@ -16,6 +16,12 @@ function initMap() {
     var infowindow = addInfoWindow(`${marker.getPosition()}`);
    
     addListener(map, marker, infowindow);
+
+    var placeSearchAutoComplete = new google.maps.places.Autocomplete(
+        document.getElementById('search-box')
+    );
+    placeSearchAutoComplete.bindTo('bounds', map);
+    
 }   
 
 

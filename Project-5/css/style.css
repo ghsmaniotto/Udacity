@@ -1,10 +1,34 @@
-html, body {
-    font-family: Arial, sans-serif;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+body {
+    background: #fafafa;
 }
 
 #map {
-    height: 100%;
+    height: 95vh;
+    width: 100%;
+    position: fixed !important;
+    z-index: 0;
+}
+
+#hiden-list-button {
+    z-index: 1000;
+    height: 5vh;
+}
+
+
+/*  MEDIAQUERIES */
+@media (max-width: 768px) { 
+    #map {
+        height: 93vh;
+        width: 100%;
+        position: fixed !important;
+        z-index: 0;
+    }
+    #hiden-list-button {
+        z-index: 1000;
+        width: 100%;
+        height: 7vh;
+    }
+    .list-group-item{
+        width: 100%;
+    }
 }
