@@ -10,27 +10,50 @@
   </head>
 
   <body>
-
+    
     <div class="contaier-fluid">
       <div class="row">
-        
-        <div class="col-sm-9" id="places-list">
-          
-        </div>
-        
-        <div class="col-sm-3">
-          <div class="row">
-            <div class="ml-4" id="hiden-list-button">
-              <button class="btn btn-secondary"> Show </button>
-              <button class="btn btn-secondary"> Hide </button>
-            </div>
-          </div>
-
-          <div id="map"></div>
-
-        </div>
+        <span class="ml-4 mr-4 align-middle title-app"> <strong>NEIGHBORHOOD MAP</strong></span>
+        <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
+          <i class="glyphicon glyphicon-align-left"></i>
+          Menu
+        </button>
       </div>
-    
+      
+    <div id="map"></div>
+
+      <div class="wrapper">
+      
+        <nav id="sidebar">
+            <!-- Sidebar Header -->
+            <div class="sidebar-header">
+              <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                  <div class="input-group">
+                    <input type="text" 
+                      id="search-box"
+                      class="form-control" 
+                      placeholder="Search..." 
+                      aria-label="Place name">
+                    <span class="input-group-btn">
+                      <button class="btn btn-secondary" type="button">Go</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+            <!-- Sidebar Links -->
+            <ul class="list-group">
+              <li class="list-group-item">Dapibus ac facilisis in</li>
+              <li class="list-group-item">Morbi leo risus</li>
+              <li class="list-group-item">Porta ac consectetur ac</li>
+              <li class="list-group-item">Vestibulum at eros</li>
+            </ul>
+        </nav>
+      
+      </div>
+      
     </div>
       
 
@@ -47,13 +70,10 @@
     <script>
       $(document).ready(function () {
 
-        $('#hide-list-button').on('click', function () {
-          $('#places-list').removeClass().addClass('col-md-3');
+          $('#sidebarCollapse').on('click', function () {
+          $('#sidebar').toggleClass('active');
         });
-        
-        // $('#sidebarCollapse').on('click', function () {
-        //   $('#sidebar').toggleClass('active');
-        // });
+
       });
     </script>
   </body>
