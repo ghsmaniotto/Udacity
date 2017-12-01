@@ -12,24 +12,25 @@
   <body>
     
     <div class="contaier-fluid">
-      <div class="row">
-        <span class="ml-4 mr-4 align-middle title-app"> <strong>NEIGHBORHOOD MAP</strong></span>
+      <div class="row fixed-top bg-success">
+        <span class="p-2 ml-4 mr-4 align-middle title-app" > <strong>NEIGHBORHOOD MAP </strong></span>
         <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
           <i class="glyphicon glyphicon-align-left"></i>
           Menu
         </button>
       </div>
       
-    <div id="map"></div>
-
-      <div class="wrapper">
+      <div class="mt-3" id="map"></div>
+      
+    </div>
+      <div class="wrapper mt-4">
       
         <nav id="sidebar">
             <!-- Sidebar Header -->
             <div class="sidebar-header">
               <div class="row">
-                <div class="col-lg-6 offset-lg-3">
-                  <div class="input-group">
+                <div class="col-lg-12 offset-lg-12">
+                  <div class="input-group mt-3">
                     <input type="text" 
                       id="search-box"
                       class="form-control" 
@@ -43,18 +44,18 @@
               </div>
             </div>
         
-            <!-- Sidebar Links -->
-            <ul class="list-group">
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Morbi leo risus</li>
-              <li class="list-group-item">Porta ac consectetur ac</li>
-              <li class="list-group-item">Vestibulum at eros</li>
+            <!-- Places list -->
+            <ul data-bind="foreach: $data.places" class="list-group">
+              <li data-bind="text: marker().title, click: $parent.showInfoWindow" class="list-group-item">
+                <span >
+                </span>
+              </li>
             </ul>
         </nav>
       
       </div>
       
-    </div>
+    <!-- </div> -->
       
 
     <!-- Scripts files -->
@@ -65,7 +66,8 @@
     <script src="bower_components/tether/dist/js/tether.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/knockout/dist/knockout.js"></script>
-    <script src="js/maps.js"></script>
+    <script src="js/app.js"></script>
+    <!-- <script src="js/maps.js"></script> -->
     
     <script>
       $(document).ready(function () {
