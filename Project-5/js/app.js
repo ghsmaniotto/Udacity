@@ -2,7 +2,7 @@
 var map;
 var infowindow;
 var markersList = [];
-var viewModel = new PlaceListViewModel(map, infowindow);
+var viewModel = new PlaceListViewModel(map);
 
 var trespassos = {
     lat: -27.455982,
@@ -76,19 +76,21 @@ function addListener(map, marker, infowindow) {
         });
 };
 
-// Knockout JS
+/* 
+    Knockout JS
+                */
 
 function Place(marker) {
     this.marker = ko.observable(marker);
-    // this.infowindow = ko.observable(infowindow)
 };
 
-function PlaceListViewModel(map, infoWindown) {
+function PlaceListViewModel(map) {
     // Data
     var self = this;
     self.map = ko.observable(map);
-    self.infowindown = ko.observable(infoWindown);
     self.places = ko.observableArray();
+    self.filter = ko.observable();
+    self.placesList = ko.observableArray();
 
     // self.incompleteTasks = ko.computed(function () {
     //     return ko.utils.arrayFilter(self.tasks(), function (task) { return !task.isDone() });
@@ -100,10 +102,20 @@ function PlaceListViewModel(map, infoWindown) {
     };
 
     self.showInfoWindow = function(place){ 
-        // var infowindow = self.infowindow();
-        self.infowindown.setContent(place.marker.title);
-        self.infowindown.open(self.map, place.marker);
+        infowindow.setContent(place.marker().title);
+        infowindow.open(self.map, place.marker());
     };
+
+    self.filteredItems = ko.computed(function () {
+        var filter = self.filter();
+        if (!filter) {
+            return self.places();
+        } else {
+            return ko.utils.arrayFilter(self.places(), function (place) {
+                return place.marker().title.includes(filter);
+            });
+        }
+    });
 };
 
 ko.applyBindings(viewModel);

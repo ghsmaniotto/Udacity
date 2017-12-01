@@ -13,7 +13,7 @@
     
     <div class="contaier-fluid">
       <div class="row fixed-top bg-success">
-        <span class="p-2 ml-4 mr-4 align-middle title-app" > <strong>NEIGHBORHOOD MAP </strong></span>
+        <span class="p-2 ml-4 mr-4 align-middle title-app"> <strong>NEIGHBORHOOD MAP </strong></span>
         <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
           <i class="glyphicon glyphicon-align-left"></i>
           Menu
@@ -35,7 +35,8 @@
                       id="search-box"
                       class="form-control" 
                       placeholder="Search..." 
-                      aria-label="Place name">
+                      aria-label="Place name"
+                      data-bind="value: filter">
                     <span class="input-group-btn">
                       <button class="btn btn-secondary" type="button">Go</button>
                     </span>
@@ -45,7 +46,7 @@
             </div>
         
             <!-- Places list -->
-            <ul data-bind="foreach: $data.places" class="list-group">
+            <ul data-bind="foreach: $data.filteredItems" class="list-group">
               <li data-bind="text: marker().title, click: $parent.showInfoWindow" class="list-group-item">
                 <span >
                 </span>
