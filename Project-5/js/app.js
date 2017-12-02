@@ -2,7 +2,7 @@
 var map;
 var infowindow;
 var markersList = [];
-var viewModel = new PlaceListViewModel(map);
+var viewModel = new PlaceListViewModel();
 
 var trespassos = {
     lat: -27.455982,
@@ -84,38 +84,48 @@ function Place(marker) {
     this.marker = ko.observable(marker);
 };
 
-function PlaceListViewModel(map) {
+function PlaceListViewModel() {
     // Data
     var self = this;
-    self.map = ko.observable(map);
     self.places = ko.observableArray();
     self.filter = ko.observable();
-    self.placesList = ko.observableArray();
-
-    // self.incompleteTasks = ko.computed(function () {
-    //     return ko.utils.arrayFilter(self.tasks(), function (task) { return !task.isDone() });
-    // });
 
     // Operations
     self.addPlace = function (marker) {
         self.places.push(new Place(marker));
     };
 
+    // Display the info window to specific marker
     self.showInfoWindow = function(place){ 
+        // Add content to infowindow
         infowindow.setContent(place.marker().title);
-        infowindow.open(self.map, place.marker());
+        // Display the infowindow
+        infowindow.open(map, place.marker());
     };
 
     self.filteredItems = ko.computed(function () {
         var filter = self.filter();
         if (!filter) {
+            // Set visible the markers when filter is empty
+            self.places().forEach(place => place.marker().setMap(map));
             return self.places();
         } else {
+            // Return filtered markers
             return ko.utils.arrayFilter(self.places(), function (place) {
+                if (place.marker().title.includes(filter)){
+                    // Display the filtered marker
+                    place.marker().setMap(map);
+                } else {
+                    // Hidden the non filtered marker
+                    place.marker().setMap(null);
+                }
+                // Return the filtered markers
                 return place.marker().title.includes(filter);
             });
         }
     });
+
+
 };
 
 ko.applyBindings(viewModel);
