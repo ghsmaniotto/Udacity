@@ -2,7 +2,7 @@
 var map;
 var infowindow;
 var markersList = [];
-var trespassos = {
+var defaultLocation = {
     lat: -27.455982,
     lng: -53.93018
 };
@@ -134,7 +134,7 @@ function PlaceListViewModel() {
 function initMap() {
     // Constructor creates a new map
     map = new google.maps.Map(document.getElementById('map'), {
-        center: trespassos,
+        center: defaultLocation,
         zoom: 16
     });
     // Create a infowindow to show markers content
@@ -148,7 +148,7 @@ function initMap() {
     */
     var service = new google.maps.places.PlacesService(map);
     service.nearbySearch({
-        location: trespassos,
+        location: defaultLocation,
         radius: 500,
         type: ['store']
     }, callback);
