@@ -1,5 +1,7 @@
 # Project 5 - Neigborhood Map
 
+It was a Bootstrap, Bower, JavaScript and Ajax application.
+
 ## Description
 A single page application featuring a map of your neighborhood or a neighborhood that you would like to visit. Add some functionality to this map including highlighted locations, third-party data about those locations and various ways to browse the content.
 
