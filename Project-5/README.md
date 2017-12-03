@@ -3,6 +3,8 @@
 ## Description
 A single page application featuring a map of your neighborhood or a neighborhood that you would like to visit. Add some functionality to this map including highlighted locations, third-party data about those locations and various ways to browse the content.
 
+---
+
 ## Execution
 The main file of the application is `index.html`. To display this project, you need to run this file in a browser.
 
@@ -18,16 +20,18 @@ To filter the places, you need to type the `place's name` at the text input and 
 ### Click in list place
 When some `list item` is `clicked` a info window is open in the marker, showing some `Foursquare's` statistics.
 
+---
+
 ## Change the mail location
 
 The default location is defined in the `app.js` file. Actually the default location is `Três Passos, Rio Grande do Sul, Brazil`.
 
 To change this value, you need to change the `lat,lng` defined in the `defaultLocation` object.
 
+</br>
+</br>
 
-
-
-
+---
 
 PS: To create the sidebar I follow some instructions of this excelent tutorial: `https://bootstrapious.com/p/bootstrap-sidebar`
 
