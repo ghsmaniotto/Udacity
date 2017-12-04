@@ -61,11 +61,11 @@ function PlaceListViewModel() {
     */
     self.showInfoWindow = function(place){
         // Add a listener to animmate the marker when clicked
-        if (place.marker().getAnimation() !== null) {
+        var timeout = 1400;
+        place.marker().setAnimation(google.maps.Animation.BOUNCE);
+        window.setTimeout(function () {
             place.marker().setAnimation(null);
-        } else {
-            place.marker().setAnimation(google.maps.Animation.BOUNCE);
-        }
+        }, timeout);
         // Set the lat,lng of the place
         var latlng = 
             place.marker().position.lat().toString() +
@@ -90,18 +90,15 @@ function PlaceListViewModel() {
                         <div><p>Users Count: <span data-bind="text: foursquare_users_count">${reqResult.response.venues[0].stats.usersCount}</span> </p></div>
                         <div><p>Tip Count: <span data-bind="text: foursquare_tip_count">${reqResult.response.venues[0].stats.tipCount}</span> </p></div>`
                     );
-                    self.foursquare_checkins_count(reqResult.response.venues[0].stats.checkinsCount);
-                    self.foursquare_users_count(reqResult.response.venues[0].stats.usersCount);
-                    self.foursquare_tip_count(reqResult.response.venues[0].stats.tipCount);
                 } else {
                     infowindow.setContent(
-                        `<div> <h4>${marker().title}</h4></div>
-                            <div"><h6>The Foursquare data can't be found for this place.</h6></div>`);
+                        `<div> <h4>${place.marker().title}</h4></div>
+                        <div"><h6>The Foursquare data can't be found for this place.</h6></div>`);
                 }
             },
             error: () => {
                 infowindow.setContent(
-                    `<div> <h4>${marker().title}</h4></div>
+                    `<div> <h4>${place.marker().title}</h4></div>
                         <div><h6>The Foursquare data can't be found for this place.</h6></div>`);
             }
         });
@@ -185,6 +182,7 @@ function callback(results, status) {
  https://developers.google.com/maps/documentation/javascript/3.exp/reference?hl=pt-br#MarkerOptionsThis is a google.maps.places.PlacesService callback function
  */
 function createMarker(place) {
+    
     // Get the marker location
     var placeLoc = place.geometry.location;
     var newIcon = makeMarkerIcon("FF7400")
@@ -217,6 +215,12 @@ function addListenerInfoWindow(map, marker, infowindow) {
     return marker.addListener(
         'click',
         function () {
+            // To animmate the marker when clicked
+            var timeout = 1400;
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            window.setTimeout(function () {
+                marker.setAnimation(null);
+            }, timeout);
             // Get foursquare data about the point
             // Set the lat,lng of the place
             var latlng =
@@ -301,7 +305,6 @@ function makeMarkerIcon(markerColor) {
 function addListenerMouseover(color, marker){
     return marker.addListener('mouseover', function(){
         this.setIcon(makeMarkerIcon(color));
-        this.setAnimation(google.maps.Animation.BOUNCE);
     })
 };
 /**
@@ -313,7 +316,6 @@ function addListenerMouseover(color, marker){
 function addListenerMouseout(color, marker) {
     return marker.addListener('mouseout', function(){
         this.setIcon(makeMarkerIcon(color));
-        this.setAnimation(null);
     })
 }
 
