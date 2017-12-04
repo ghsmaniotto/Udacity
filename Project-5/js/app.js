@@ -59,7 +59,13 @@ function PlaceListViewModel() {
         about the specific place
     * @param {place} title - The title of the book
     */
-    self.showInfoWindow = function(place){ 
+    self.showInfoWindow = function(place){
+        // Add a listener to animmate the marker when clicked
+        if (place.marker().getAnimation() !== null) {
+            place.marker().setAnimation(null);
+        } else {
+            place.marker().setAnimation(google.maps.Animation.BOUNCE);
+        }
         // Set the lat,lng of the place
         var latlng = 
             place.marker().position.lat().toString() +
@@ -78,7 +84,8 @@ function PlaceListViewModel() {
                     reqResult.response.venues &&
                     reqResult.response.venues[0]) {
                     infowindow.setContent(
-                        `<div><h4>Foursquare info's</h4></div>
+                        `<div><h3>${place.marker().title}</h3></div>
+                        <div><h4>Foursquare info's</h4></div>
                         <div><p>Checkins Count: <span data-bind="text: foursquare_checkins_count">${reqResult.response.venues[0].stats.checkinsCount}</span> </p></div>
                         <div><p>Users Count: <span data-bind="text: foursquare_users_count">${reqResult.response.venues[0].stats.usersCount}</span> </p></div>
                         <div><p>Tip Count: <span data-bind="text: foursquare_tip_count">${reqResult.response.venues[0].stats.tipCount}</span> </p></div>`
@@ -87,11 +94,15 @@ function PlaceListViewModel() {
                     self.foursquare_users_count(reqResult.response.venues[0].stats.usersCount);
                     self.foursquare_tip_count(reqResult.response.venues[0].stats.tipCount);
                 } else {
-                    infowindow.setContent(`<div"><h6>The Foursquare data can't be found for this place.</h6></div>`);
+                    infowindow.setContent(
+                        `<div> <h4>${marker().title}</h4></div>
+                            <div"><h6>The Foursquare data can't be found for this place.</h6></div>`);
                 }
             },
             error: () => {
-                infowindow.setContent(`<div><h6>The Foursquare data can't be found for this place.</h6></div>`);
+                infowindow.setContent(
+                    `<div> <h4>${marker().title}</h4></div>
+                        <div><h6>The Foursquare data can't be found for this place.</h6></div>`);
             }
         });
         infowindow.open(map, place.marker());
@@ -181,22 +192,23 @@ function createMarker(place) {
     var marker = new google.maps.Marker({
         map: map,
         icon: newIcon,
+        animation: google.maps.Animation.DROP,
         position: placeLoc,
         title: place.name
     });
-    // Add a listner to show an infowindow when marker is clicked
+    // Add a listener to show an infowindow when marker is clicked
     addListenerInfoWindow(map, marker, infowindow);
-    // Add a listner to mouseover
-    addListenerMouseover("5bc0de", marker)
-    // Add a listner to mouseout
-    addListenerMouseout("FF7400", marker)
+    // Add a listener to mouseover
+    addListenerMouseover("5bc0de", marker);
+    // Add a listener to mouseout
+    addListenerMouseout("FF7400", marker);
     // Add the marker to the view model
     viewModel.addPlace(marker);
     return marker;
 };
 
 /**
- * @description  Add a listner to show an infowindow when marker is clicked
+ * @description  Add a listener to show an infowindow when marker is clicked
  * @param {google.maps.Map} map - Google Maps map
  * @param {google.maps.marker} marker - Specific marker to add listener
  * @param {google.maps.InfoWindow} infowindow - The map info window
@@ -205,13 +217,65 @@ function addListenerInfoWindow(map, marker, infowindow) {
     return marker.addListener(
         'click',
         function () {
-            // Set the infowindow content
-            infowindow.setContent(marker.title);
+            // Get foursquare data about the point
+            // Set the lat,lng of the place
+            var latlng =
+                marker.position.lat().toString() +
+                "," + marker.position.lng().toString();
+            // Get the venues response of foursquare and set the infowindow content
+            var foursquare_url = getFoursquareDataFor(latlng, marker.title);
+            // Use Ajax to request the foursquare data
+            $.ajax({
+                type: 'GET',
+                url: foursquare_url,
+                dataType: 'jsonp',
+                success: (reqResult) => {
+                    // In success case, show the foursquare content
+                    if (reqResult.meta &&
+                        reqResult.meta.code === 200 &&
+                        reqResult.response.venues &&
+                        reqResult.response.venues[0]) {
+                        infowindow.setContent(
+                        `<div><h3>${marker.title}</h3></div>
+                        <div><h4>Foursquare info's</h4></div>
+                        <div><p>Checkins Count: <span data-bind="text: foursquare_checkins_count">${reqResult.response.venues[0].stats.checkinsCount}</span> </p></div>
+                        <div><p>Users Count: <span data-bind="text: foursquare_users_count">${reqResult.response.venues[0].stats.usersCount}</span> </p></div>
+                        <div><p>Tip Count: <span data-bind="text: foursquare_tip_count">${reqResult.response.venues[0].stats.tipCount}</span> </p></div>`
+                        );
+                    } else {
+                        infowindow.setContent(
+                            `<div> <h4>${marker.title}</h4></div>
+                            <div"><h6>The Foursquare data can't be found for this place.</h6></div>`);
+                    }
+                },
+                error: () => {
+                    infowindow.setContent(
+                        `<div> <h4>${marker.title}</h4></div>
+                        <div><h6>The Foursquare data can't be found for this place.</h6></div>`);
+                }
+            });
             // Display the infowindow when the button is clicked
             infowindow.open(map, marker);
+    });
+};
+
+/**
+ * @description  Add a listner to animate the marker when it is clicked
+ * @param {google.maps.marker} marker - Specific marker to add listener
+ */
+function addListenerAnimation(marker) {
+    return marker.addListener(
+        'click',
+        function () {
+            // Set the infowindow content
+            if (this.getAnimation() !== null){
+                this.setAnimation(null);
+            } else {
+                this.setAnimation(google.maps.Animation.BOUNCE);
+            }
         });
-    };
-    
+};
+
 /**
     * @description  Creates a new marker with defined color
     * @param {String} makerColor - String that contains the color 
@@ -237,6 +301,7 @@ function makeMarkerIcon(markerColor) {
 function addListenerMouseover(color, marker){
     return marker.addListener('mouseover', function(){
         this.setIcon(makeMarkerIcon(color));
+        this.setAnimation(google.maps.Animation.BOUNCE);
     })
 };
 /**
@@ -248,7 +313,12 @@ function addListenerMouseover(color, marker){
 function addListenerMouseout(color, marker) {
     return marker.addListener('mouseout', function(){
         this.setIcon(makeMarkerIcon(color));
+        this.setAnimation(null);
     })
+}
+
+function mapErrorHandler(err){
+    $('#map').html(`<div class="mt-5"><div class="row justify-content-center mt-5 pt-5"><h1 class="mt-5 pt-5"><em>The Google Maps's map can't be loaded :/</em></h1></div></div>`);
 }
 // End Google API section
 
