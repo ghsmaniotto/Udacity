@@ -1,0 +1,45 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+	<div class="row">
+		<div class="col-md-11 col-md-offset-1 p-4">
+			<h1>Edit {{item.catalog_category.name}} Item - {{item.name}}</h1>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+						{% for message in messages %}
+							<div class="alert alert-danger p-2 m-3" role="alert">
+								<strong> {{ message }} </strong>
+							</div>
+						{% endfor %}
+				{% endif %}
+			{% endwith %}
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-1 pt-4">
+				<form action="{{ url_for('editItem',category=item.catalog_category.name, item=item.name)}}" method = "post">
+					<div class="form-group">
+						<label for="name">Name:</label>
+						<input type ="text" maxlength="100" class="form-control p-3 m-3" name="name" value="{{item.name }}">
+
+						<label for="description">Description:</label>
+						<textarea class="form-control p-3 m-3" maxlength="250" rows="3" name="description">{{item.description}}</textarea>
+
+						<button class="btn btn-default p-3 m-3" id="submit" type="submit">
+						<span aria-hidden="true"></span>Save</button>
+						<a href = "{{url_for('showCategoryItems', category=item.catalog_category.name)}}" class="m-3 p-3">
+							<button class="btn btn-default delete">
+							<span aria-hidden="true"></span>Cancel</button>
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

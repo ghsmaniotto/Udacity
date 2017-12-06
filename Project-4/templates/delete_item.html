@@ -1,0 +1,34 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+	<div class="row">
+		<h2 class="p-4 m-4"> Are you sure you want to delete {{item.name}} from {{item.catalog_category.name}}? </h2>
+	</div>
+	<div class="container">
+		<div class="row">
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+						{% for message in messages %}
+							<div class="alert alert-danger p-2 m-3" role="alert">
+								<strong> {{ message }} </strong>
+							</div>
+						{% endfor %}
+				{% endif %}
+			{% endwith %}
+		</div>
+	</div>
+	<div class="container">
+		<form action="#" method="POST">
+
+			<button type="submit" class="btn btn-default p-3 m-3" id="submit">
+			<span aria-hidden="true"></span>Delete</button>
+
+		</form>
+
+		<a href="{{url_for('showCategoryItem', category=item.catalog_category.name, item=item.name)}}">
+			<button class="btn btn-default p-3 m-3"> <span aria-hidden="true"></span> Cancel</button>
+		</a>
+	</div>
+
+{% endblock %}

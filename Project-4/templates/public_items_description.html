@@ -1,0 +1,32 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+		<div class="container text-center">
+          <div class="jumbotron">
+            <h1 class="mb-4">{{item.name}}</h1>            
+          </div>
+        </div>
+        
+        <div class="container">
+			<div class="row">
+				{% with messages = get_flashed_messages() %}
+					{% if messages %}
+							{% for message in messages %}
+								<div class="alert alert-danger p-2 m-3" role="alert">
+									<strong> {{ message }} </strong>
+								</div>
+							{% endfor %}
+					{% endif %}
+				{% endwith %}
+			</div>
+		</div>
+
+        <div class="container">
+            <div class="jumbotron" id="description">
+                <h3 class="pb-4">Description</h3>
+                <p style="font-size: 20px;" ">{{item.description}}</p>
+            </div>               
+        </div>
+		
+{% endblock %}

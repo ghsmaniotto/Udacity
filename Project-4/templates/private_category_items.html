@@ -1,0 +1,51 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+	<div class="container">
+		<div class="row">
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+						{% for message in messages %}
+							<div class="alert alert-danger p-2 m-3" role="alert">
+								<strong> {{ message }} </strong>
+							</div>
+						{% endfor %}
+				{% endif %}
+			{% endwith %}
+		</div>
+	</div>
+
+	<div class="container text-center">
+          <div class="jumbotron">
+            <h1 class="pb-4">{{category}} items <en>({{items_number}} items)</en></h1>
+            <p>
+                <a class="btn btn-md btn-success p-2 mb-4" href="{{url_for('newItem', category=category)}}"" role="button">Add item</a>
+                <a class="btn btn-md btn-success p-2 mb-4" href="{{url_for('editCategory', category=category)}}"" role="button">Edit Category</a>
+                <a class="btn btn-md btn-success p-2 mb-4" href="{{url_for('deleteCategory', category=category)}}"" role="button">Delete Category</a>
+            </p>
+          </div>
+        </div>
+        
+        <div class="container">
+        	<div class="row text-center">
+				{% for item in items %}	           
+	                <div class="col-sm-4 pb-4">
+	                    <div class="card">
+	                        <div class="card-block">
+	                            <h3 class="card-title pt-3">{{item.name}}</h3>
+	                        </div>
+	                        <div class="card-footer">
+	                            <a href="{{url_for('showCategoryItem', category=item.catalog_category.name, item=item.name)}}"><small class="text-muted">View description</small></a>
+	                        </div>
+	                    </div>
+	                </div>
+                {% endfor %}                   
+            </div>
+        </div>
+
+{% endblock %}
+
+      
+<!-- Jumbotron -->
+        
